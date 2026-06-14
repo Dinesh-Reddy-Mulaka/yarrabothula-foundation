@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Initiatives | Yarrabothula Foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+<!-- ═══════════ DONATE MODAL ═══════════ -->
+<style>
+#donateModal{display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem}
+#donateModal.open{display:flex}
+.dm-wrap{background:#fff;border-radius:20px;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;position:relative;box-shadow:0 24px 80px rgba(0,0,0,.35);font-family:'Nunito Sans',sans-serif}
+.dm-header{background:linear-gradient(135deg,#9B1239,#E11D48);padding:1.4rem 1.6rem;display:flex;align-items:center;justify-content:space-between;border-radius:20px 20px 0 0}
+.dm-header-left{display:flex;align-items:center;gap:.8rem}
+.dm-logo{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+.dm-title{color:#fff;font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;line-height:1.2}
+.dm-subtitle{color:rgba(255,255,255,.75);font-size:.73rem;margin-top:.1rem}
+.dm-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0}
+.dm-close:hover{background:rgba(255,255,255,.35)}
+.dm-body{padding:1.6rem}
+/* Toggle */
+.dm-toggle{display:flex;background:#f1f5f9;border-radius:50px;padding:4px;margin-bottom:1.4rem}
+.dm-tog-btn{flex:1;padding:.5rem;border:none;border-radius:50px;font-family:'Nunito Sans',sans-serif;font-size:.84rem;font-weight:700;cursor:pointer;transition:all .25s;background:#0a1a3a;color:#64748b}
+.dm-tog-btn.active{background:#E11D48;color:#fff;box-shadow:0 2px 8px rgba(225,29,72,.3)}
+/* Amounts */
+.dm-amt-label{font-size:.78rem;font-weight:700;color:#64748b;text-align:center;margin-bottom:.8rem;letter-spacing:.05em;text-transform:uppercase}
+.dm-amts{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.6rem;justify-content:center}
+.dm-amt{padding:.55rem 1.1rem;border:2px solid #e2e8f0;border-radius:50px;background:#fff;font-family:'Nunito Sans',sans-serif;font-size:.93rem;font-weight:700;cursor:pointer;transition:all .25s;color:#1e293b;min-width:70px;text-align:center}
+.dm-amt:hover{border-color:#E11D48;color:#E11D48}
+.dm-amt.active{background:#E11D48;border-color:#E11D48;color:#fff;box-shadow:0 4px 14px rgba(225,29,72,.3)}
+.dm-custom-row{display:flex;gap:.5rem;margin-bottom:1.2rem}
+.dm-custom-row input{flex:1;padding:.55rem 1rem;border:2px solid #e2e8f0;border-radius:50px;font-family:'Nunito Sans',sans-serif;font-size:.93rem;color:#1e293b;outline:none;transition:border-color .2s}
+.dm-custom-row input:focus{border-color:#E11D48}
+.dm-custom-row select{padding:.55rem .8rem;border:2px solid #e2e8f0;border-radius:50px;font-family:'Nunito Sans',sans-serif;font-size:.88rem;color:#1e293b;outline:none;background:#fff;cursor:pointer}
+/* Divider */
+.dm-divider{border:none;border-top:1px solid #f1f5f9;margin:1.2rem 0}
+/* Profile strip */
+.dm-profile{display:flex;align-items:center;gap:.8rem;background:#fdf2f4;border-radius:12px;padding:.9rem 1rem;margin-bottom:1.2rem}
+.dm-profile-img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid #E11D48}
+.dm-profile-name{font-weight:700;color:#1e293b;font-size:.9rem}
+.dm-profile-tag{font-size:.72rem;color:#E11D48;font-weight:600}
+/* Form */
+.dm-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.7rem}
+.dm-form-group{display:flex;flex-direction:column;gap:.25rem;margin-bottom:.7rem}
+.dm-form-group label{font-size:.75rem;font-weight:700;color:#475569;letter-spacing:.03em}
+.dm-form-group input,.dm-form-group textarea{padding:.65rem .9rem;border:1.5px solid #e2e8f0;border-radius:8px;font-family:'Nunito Sans',sans-serif;font-size:.88rem;color:#1e293b;outline:none;transition:border-color .2s}
+.dm-form-group input:focus,.dm-form-group textarea:focus{border-color:#E11D48}
+.dm-checkbox{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:#64748b;margin-bottom:.5rem;cursor:pointer}
+.dm-checkbox input{accent-color:#E11D48;width:14px;height:14px}
+/* Submit */
+.dm-submit{width:100%;padding:1rem;background:linear-gradient(135deg,#9B1239,#E11D48);color:#fff;border:none;border-radius:50px;font-family:'Nunito Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:1rem;transition:all .3s;box-shadow:0 4px 20px rgba(225,29,72,.3)}
+.dm-submit:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(225,29,72,.4)}
+/* Payment icons */
+.dm-payment-icons{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem;justify-content:center}
+.dm-pay-icon{padding:.4rem .9rem;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.75rem;font-weight:700;color:#1e293b;background:#fff}
+.dm-pay-icon.paypal{background:#003087;color:#fff;border-color:#003087}
+.dm-pay-icon.venmo{background:#008CFF;color:#fff;border-color:#008CFF}
+/* Footer */
+.dm-footer{padding:.9rem 1.6rem;background:#f8fafc;border-top:1px solid #f1f5f9;border-radius:0 0 20px 20px;text-align:center;font-size:.7rem;color:#94a3b8;line-height:1.6}
+.dm-footer a{color:#E11D48;font-weight:600}
+/* Donate trigger btn */
+.donate-trigger-btn{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#9B1239,#E11D48);color:#fff;padding:.75rem 1.9rem;border-radius:50px;font-family:'Nunito Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .3s;border:none;box-shadow:0 4px 18px rgba(225,29,72,.3)}
+.donate-trigger-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(225,29,72,.4)}
+@keyframes dmIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.dm-wrap{animation:dmIn .25s ease}
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:8px;z-index:1001;position:relative;pointer-events:all;}
+.hamburger span{display:block;width:25px;height:3px;background:#fff;border-radius:3px;transition:all .3s ease}
+.hamburger.open span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+
+@media(max-width:768px){
+  .hamburger{display:flex}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:#0a1a3a;flex-direction:column;padding:1rem 0;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+  .nav-links.open{display:flex}
+  .nav-links li{width:100%}
+  .nav-links li a{display:block;padding:.85rem 1.5rem;color:#fff;font-size:1rem;border-bottom:1px solid rgba(255,255,255,.08)}
+  .nav-links li a:hover,.nav-links li a.active{background:rgba(255,255,255,.08);color:var(--sand,#e8c97a)}
+  .nav-inner{position:relative;display:flex;align-items:center;justify-content:space-between;padding:.5rem 1rem}
+  div[style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr !important}
+}
+</style>
+<nav id="mainNav" class="page-nav" style="position:relative;background:#0a1a3a">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="https://yarrabothula.com/images/logo.png" alt="Yarrabothula Foundation" style="height:90px;width:auto;flex-shrink:0">
+    </a>
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Toggle navigation">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+    <ul class="nav-links" id="navLinks"><li class="nav-item"><a href="index.html">Home</a></li>
+<li class="nav-item"><a href="about.html">About Us</a></li>
+<li class="nav-item"><a href="charity.html">Charity</a></li>
+<li class="nav-item"><a href="events.html">Events &amp; Gallery</a></li>
+<li class="nav-item"><a href="initiatives.html" class="active">Initiatives</a></li>
+<li class="nav-item"><a href="volunteer.html">Youth &amp; Volunteer</a></li>
+<li class="nav-item"><a href="contact.html">Contact Us</a></li>
+</ul>
+  </div>
+</nav>
+<section class="page-hero"><div class="breadcrumb"><span onclick="gotoPage('home')">Home</span> &rsaquo; <span style="color:var(--sand)">Initiatives</span></div><h1>Our Initiatives</h1><p>Named programs that define our impact — from cancer walks to scholarships, food drives to free water supply.</p><div class="page-hero-wave"><svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,25 C360,50 1080,0 1440,25 L1440,50 L0,50 Z" fill="#FAF6F0"/></svg></div></section>
+  <section style="background:var(--cream);padding:6rem 0"><div class="container">
+    <div class="sec-hdr reveal"><span class="sec-tag">Our Programs</span><h2 class="sec-title">Making a <em>Real Difference</em></h2><p>Each initiative is a named program with a clear mission, measurable goals, and a direct connection to Yarrabothula's family legacy.</p></div>
+        <div class="init-block reveal"><div class="init-top"><div class="init-num">01</div><div class="init-hdr"><h3>Community Food Drive</h3><p>Food package distributions to families in need accross the Houston-Dallas-Austin corridor in Texas and accross USA, Guntur district in Andhra Pradesh state and accross India. Our volunteers prepare and distribute grocery packages, warm meals, and essential supplies every year.</p></div></div><div class="init-stats"><div class="init-stat"><strong>2000+</strong><span>Meals Served Yearly</span></div><div class="init-stat"><strong>10+</strong><span>Events Per Year</span></div><div class="init-stat"><strong>USA+India</strong><span>Locations Served</span></div></div><div class="init-gallery"><div class="ig-item ig4"><span>🍲</span><div class="ig-label">Food Drive</div></div><div class="ig-item ig5"><span>🥫</span><div class="ig-label">Grocery Packages</div></div><div class="ig-item ig6"><span>🤝</span><div class="ig-label">Community Volunteers</div></div></div><div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap"><a href="javascript:void(0)" onclick="gotoPage('involved')" class="btn btn-clay" style="cursor:pointer">Volunteer at Food Drive</a><a href="javascript:void(0)" onclick="gotoPage('contact')" class="btn btn-outline" style="cursor:pointer">Host a Food Drive</a></div></div>
+    <div class="init-block reveal"><div class="init-top"><div class="init-num">02</div><div class="init-hdr"><h3>Yarrabothula Neeraja Memorial Scholarship Program</h3><p>Annual scholarships awarded to deserving students in the USA and India in memory of Yarrabothula Neeraja — a woman who believed deeply in the power of education. Recipients receive financial support, mentorship, and school supplies. Over 100 stuffed backpacks donated since 2025.</p></div></div><div class="init-stats"><div class="init-stat"><strong>10+</strong><span>Scholarships Annually</span></div><div class="init-stat"><strong>100+</strong><span>Backpacks Donated</span></div><div class="init-stat"><strong>USA+India</strong><span>Students Supported</span></div></div><div class="init-gallery"><div class="ig-item ig7"><span>📚</span><div class="ig-label">Scholarship Awards</div></div><div class="ig-item ig8"><span>🎓</span><div class="ig-label">Student Success</div></div><div class="ig-item ig9"><span>🖊️</span><div class="ig-label">Back to School</div></div></div><div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap"><a href="javascript:void(0)" onclick="gotoPage('contact')" class="btn btn-clay" style="cursor:pointer">Apply for Scholarship</a><a href="javascript:void(0)" onclick="gotoPage('charity')" class="btn btn-outline" style="cursor:pointer">Support Education</a></div></div>
+    <div class="init-block reveal"><div class="init-top"><div class="init-num">03</div><div class="init-hdr"><h3>Free Water Supply &amp; Health Camps</h3><p>Providing clean and safe drinking water to residents in Guntur district, Andhra Pradesh state and other areas in India. We organize health camps, blood donation drives, and CPR training in collaboration with local authorities and the Indian Red Cross Society.</p></div></div><div class="init-stats"><div class="init-stat"><strong>40K+</strong><span>People with Clean Water</span></div><div class="init-stat"><strong>100+</strong><span>CPR Training Recipients</span></div><div class="init-stat"><strong>Guntur, India</strong><span>Primary Region</span></div></div><div class="init-gallery"><div class="ig-item ig3"><span>💧</span><div class="ig-label">Free Water Supply</div></div><div class="ig-item ig1"><span>🏥</span><div class="ig-label">Health Camps</div></div><div class="ig-item ig5"><span>❤️</span><div class="ig-label">Blood Donation Drive</div></div></div><div style="margin-top:1.5rem"><a href="javascript:void(0)" onclick="gotoPage('contact')" class="btn btn-clay" style="cursor:pointer">Support This Initiative</a></div></div>
+  </div></section>
+  <section style="background:var(--white);padding:6rem 0"><div class="container">
+    <div class="sec-hdr reveal"><span class="sec-tag">Annual Impact</span><h2 class="sec-title">FSR Activities <em>by Year</em></h2><p>Family social responsibility, year-by-year reports of what our donations and volunteer hours have made possible.</p></div>
+    <div class="csr-timeline reveal">
+      <div class="csr-block"><div class="csr-year">2025-2026</div><div class="csr-stats-row"><div class="csr-stat"><strong>$15K+</strong><span>Donated to BCRF &amp; Causes</span></div><div class="csr-stat"><strong>50+</strong><span>Walk Participants</span></div><div class="csr-stat"><strong>10+</strong><span>Scholarships Awarded</span></div></div><p class="csr-desc">2025 marks our first year of formal operations — Launching the Walk for Neeraja 5K, establishing the Yarrabothula Neeraja Memorial Scholarship Program, and organizing food drives in Houston, Texas, USA and in Guntur district, Andhra Pradesh, India.</p><span class="csr-link">📄 2025-2026 Impact Report (Coming Soon)</span></div>
+      
+      <div class="csr-block"><div class="csr-year">2025</div><div class="csr-stats-row"><div class="csr-stat"><strong>$10K+</strong><span>Community Donations</span></div><div class="csr-stat"><strong>500+</strong><span>Meals Provided</span></div><div class="csr-stat"><strong>100+</strong><span>Volunteer Hours</span></div></div><p class="csr-desc">In 2025, the Yarrabothula family was organizing community food drives, back-to-school supply distributions, and water supply initiatives in Guntur district, Andhra Pradesh, India — laying the groundwork for the formal Foundation established in 2026.</p><span class="csr-link" style="cursor:pointer">📄 2025 Impact Report (Coming Soon)</span></div>
+      
+      <div class="csr-block"><div class="csr-year">2024 &amp; Before</div><div class="csr-stats-row"><div class="csr-stat"><strong>$10K+</strong><span>Donated to Causes</span></div><div class="csr-stat"><strong>40K+</strong><span>People Given Clean Water</span></div><div class="csr-stat"><strong>1000+</strong><span>Health Checkups<!--CPR Training Recipients--></span></div></div><p class="csr-desc">In this period, our focus was on community food drives, healthcare and clean water — organizing health camps, blood donation drives, and extending the free clean water supply initiative in Guntur district, Andhra Pradesh, India.</p><span class="csr-link" style="cursor:pointer">📄 2024 &amp; Before, Impact Report (Coming Soon)</span></div>
+     
+    </div>
+  </div></section>
+  <section class="newsletter"><div class="cn reveal"><span class="sec-tag" style="display:block;text-align:center">Stay Connected</span><h2>Join Our Newsletter</h2><p>Initiative updates and news from the Yarrabothula Foundation.</p><form class="nl-form" onsubmit="subNL(event,'nl4')"><input type="email" placeholder="Enter your email address" required><button type="submit">Subscribe Now</button></form><p class="nl-ok" id="nl4">🌸 Thank you!</p></div></section>
+
+<footer><div class="container">
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:1rem">
+      <img src="https://yarrabothula.com/images/logo.png" alt="Yarrabothula Foundation" style="height:150px;width:auto;flex-shrink:0">
+      </div>
+      <p>A non-profit organization dedicated to serving communities in honor of beloved Yarrabothula family members.</p>
+      <!--<div class="soc-links">
+        <a class="soc-link" href="#" title="Facebook">f</a>
+        <a class="soc-link" href="#" title="Instagram">📷</a>
+        <a class="soc-link" href="#" title="Twitter">𝕏</a>
+        <a class="soc-link" href="#" title="YouTube">▶</a>
+      </div>-->
+      <div class="soc-links">
+        <a class="soc-link" href="https://www.facebook.com/ysrforpeople/" target="_blank" title="Facebook">f</a>
+        <a class="soc-link" href="https://www.instagram.com/ysrforpeople/" title="Instagram">📷</a>
+        <a class="soc-link" href="https://x.com/YSRforPeople" target="_blank" title="Twitter">𝕏</a>
+        <a class="soc-link" href="#" title="YouTube">▶</a>
+      </div>
+    </div>
+    <div class="ft-col"><h4>Useful Links</h4><ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="events.html">Events &amp; Gallery</a></li>
+      <li><a href="volunteer.html">Get Involved</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul></div>
+    <div class="ft-col"><h4>Quick Links</h4><ul>
+      <li>
+          <button onclick="window.open('https://616264f7-8282-483e-be17-3160199070dd.paylinks.godaddy.com', '_blank')" class="donate-trigger-btn">Donate Now</button>
+          <!--<a href="#" onclick="openDonate();return false">Donate Now</a>-->
+          </li>
+      <li><a href="volunteer.html">Become a Volunteer</a></li>
+      <li><a href="charity.html">Education Support</a></li>
+      <li><a href="charity.html">Cancer Awareness</a></li>
+      <li><a href="initiatives.html">Annual Reports</a></li>
+    </ul></div>
+    <div class="ft-col"><h4>Contact Info</h4>
+      <div class="ft-ci"><div class="ft-ci-ic">✉️</div><div class="ft-ci-tx"><strong>Email Us</strong><a href="mailto:ysr@yarrabothula.com">ysr@yarrabothula.com</a></div></div>
+      <div class="ft-ci"><div class="ft-ci-ic">🎗️</div><div class="ft-ci-tx"><strong>BCRF Donations</strong><a href="http://give.bcrf.org/neerajayarrabothula" target="_blank" style="color:rgba(255,180,180,.75);font-size:.78rem">give.bcrf.org/neerajayarrabothula</a></div></div>
+    </div>
+  </div>
+  <div class="ft-bottom"><span>Copyrights &copy; 2026 Yarrabothula Foundation. All Rights Reserved. 🌸</span><div class="ft-bot-links"><a href="#">Terms &amp; Conditions</a><a href="#">Privacy Policy</a></div></div>
+</div></footer>
+<script>
+function toggleMenu(){
+  document.getElementById('hamburgerBtn').classList.toggle('open');
+  document.getElementById('navLinks').classList.toggle('open');
+}
+document.querySelectorAll('.nav-links a').forEach(function(link){
+  link.addEventListener('click',function(){
+    document.getElementById('hamburgerBtn').classList.remove('open');
+    document.getElementById('navLinks').classList.remove('open');
+  });
+});
+const ro=new IntersectionObserver((e)=>{e.forEach((el,i)=>{if(el.isIntersecting){setTimeout(()=>el.target.classList.add('visible'),i*80);ro.unobserve(el.target)}});},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+function gotoPage(text){
+    if(text=="about"){
+        window.open("about.html", "_self");
+    }else if(text=="charity"){
+        window.open("charity.html", "_self");
+    }else if(text=="events"){
+        window.open("events.html", "_self");
+    }else if(text=="initiatives"){
+        window.open("initiatives.html", "_self");
+    }else if(text=="volunteer"){
+        window.open("volunteer.html", "_self");
+    }else if(text=="contact"){
+        window.open("contact.html", "_self");
+    }else if(text=="involved"){
+        window.open("volunteer.html", "_self");
+    }
+}
+function subNL(e,id){e.preventDefault();document.getElementById(id).style.display='block';e.target.reset()}
+function switchTab(btn,id){const p=btn.closest('section');p.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));p.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.getElementById(id).classList.add('active')}
+function selAmt(b){b.closest('section').querySelectorAll('.amt-btn').forEach(x=>x.classList.remove('sel'));b.classList.add('sel')}
+function submitForm(e,sid){e.preventDefault();document.getElementById(sid).style.display='block';e.target.style.display='none'}
+function filterEv(btn,cat){btn.closest('section').querySelectorAll('.amt-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');document.querySelectorAll('.ev-card').forEach(c=>{c.style.display=(cat==='all'||c.dataset.c===cat)?'':'none'})}
+
+let cur=0;const slides=document.querySelectorAll('.slide'),dots=document.querySelectorAll('.dot');let si=setInterval(next,5500);
+function goSlide(n){slides[cur].classList.remove('active');dots[cur].classList.remove('active');cur=n;slides[cur].classList.add('active');dots[cur].classList.add('active');clearInterval(si);si=setInterval(next,5500)}
+function next(){goSlide((cur+1)%slides.length)}
+function fmtNum(v,p,s){let r;if(v>=100000)r=(v/1000).toFixed(0)+'K';else if(v>=1000)r=(v/1000).toFixed(v>=10000?0:1)+'K';else r=v.toFixed(0);return(p||'')+r+(s||'')}
+const io=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){document.querySelectorAll('.impact-num').forEach(el=>{if(el.dataset.done)return;el.dataset.done='1';const t=parseFloat(el.dataset.t),pr=el.dataset.p||'',su=el.dataset.s||'';const dur=2200,st=performance.now();const u=tm=>{const p=Math.min((tm-st)/dur,1),ease=1-Math.pow(1-p,3);el.textContent=fmtNum(Math.floor(t*ease),pr,su);if(p<1)requestAnimationFrame(u)};requestAnimationFrame(u)});io.disconnect()}})},{threshold:.3});
+const ib=document.querySelector('.impact-bar');if(ib)io.observe(ib);
+
+</script>
+</body></html>
